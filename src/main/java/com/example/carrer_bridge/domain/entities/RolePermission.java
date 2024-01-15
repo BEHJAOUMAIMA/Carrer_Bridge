@@ -7,20 +7,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Builder
-public class User {
+public class RolePermission {
     @Id
-    @GeneratedValue ( strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String password;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
+
+    @ManyToOne
+    @JoinColumn(name = "permission_id")
+    private Permission permission;
 }

@@ -7,20 +7,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Builder
-public class User {
+public class Skill {
+
     @Id
-    @GeneratedValue ( strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String password;
 
     @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
+    @JoinColumn(name = "professional_id")
+    private Professional professional;
+
+    private String name;
+    private Integer proficiencyLevel;
 }
