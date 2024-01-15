@@ -1,5 +1,6 @@
 package com.example.carrer_bridge.domain.entities;
 
+import com.example.carrer_bridge.domain.enums.CandidatureStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

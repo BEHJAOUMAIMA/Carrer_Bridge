@@ -1,0 +1,9 @@
+name: oumaima
+services:
+  mysql:
+    image: mysql:8.2.0
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=career_bridge
+    ports:
+      - 3306:3306

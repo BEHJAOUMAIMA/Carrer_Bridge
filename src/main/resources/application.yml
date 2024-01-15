@@ -1,21 +1,9 @@
 spring:
-
-  output:
-    ansi:
-      enabled: always
-
   liquibase:
     enabled: on
     change-log: db/master.yml
 
-  docker:
-    compose:
-      file: src/main/docker/carrerBridge.yml
-      enabled: on
-      lifecycle-management: start_and_stop
-
   datasource:
-    url: jdbc:mysql://localhost:3306/carrer_bridge
+    url: jdbc:mysql://localhost:3306/career_bridge
     username: root
     password:
-    driver-class-name: com.mysql.cj.jdbc.Driver
