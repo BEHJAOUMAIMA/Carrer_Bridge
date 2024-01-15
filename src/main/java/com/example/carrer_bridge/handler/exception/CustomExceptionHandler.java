@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class CustomExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity handleValidationExceptions(MethodArgumentNotValidException e){
+    public ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException e){
         Map<String, List<String>> errors = e.getBindingResult()
                 .getFieldErrors()
                 .stream()
@@ -25,9 +25,7 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(OperationException.class)
     public ResponseEntity<ResponseMessage> handleOperationException(OperationException ex) {
-
         ResponseMessage responseMessage = new ResponseMessage(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
-
         return ResponseEntity.badRequest().body(responseMessage);
     }
 
