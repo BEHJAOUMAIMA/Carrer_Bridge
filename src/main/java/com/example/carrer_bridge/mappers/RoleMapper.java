@@ -2,6 +2,7 @@ package com.example.carrer_bridge.mappers;
 
 import com.example.carrer_bridge.domain.entities.Role;
 import com.example.carrer_bridge.domain.enums.RoleType;
+import com.example.carrer_bridge.dto.request.RoleRequestDto;
 import com.example.carrer_bridge.dto.response.RoleResponseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -10,6 +11,7 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring")
 public interface RoleMapper {
     RoleResponseDto toResponseDto(Role role);
+    Role fromRequestDto(RoleRequestDto roleRequestDto);
 
     @Mapping(target = "roleType", source = "roleType", qualifiedByName = "toRoleType")
     Role toEntity(Role roleRequestDto);

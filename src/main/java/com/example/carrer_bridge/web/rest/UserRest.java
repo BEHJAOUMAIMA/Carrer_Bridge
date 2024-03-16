@@ -65,7 +65,7 @@ public class UserRest {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ResponseMessage> deleteCompetition(@PathVariable Long id) {
+    public ResponseEntity<ResponseMessage> deleteUser(@PathVariable Long id) {
         Optional<User> existingUser = userService.findById(id);
 
         if (existingUser.isEmpty()) {
