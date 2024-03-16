@@ -1,6 +1,7 @@
 package com.example.carrer_bridge.service;
 
 import com.example.carrer_bridge.domain.entities.Role;
+import com.example.carrer_bridge.domain.enums.RoleType;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,4 +15,5 @@ public interface RoleService {
     Optional<Role> findById(Long id);
     Role update(Role roleUpdated, Long id);
     void delete(Long id);
+    Optional<Role> findByName(RoleType roleType);
 }

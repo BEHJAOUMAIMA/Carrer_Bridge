@@ -1,8 +1,11 @@
 package com.example.carrer_bridge.service.impl;
 
+import com.example.carrer_bridge.domain.entities.Role;
 import com.example.carrer_bridge.domain.entities.User;
 import com.example.carrer_bridge.handler.exception.OperationException;
+import com.example.carrer_bridge.mappers.RoleMapper;
 import com.example.carrer_bridge.repository.UserRepository;
+import com.example.carrer_bridge.service.RoleService;
 import com.example.carrer_bridge.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -16,6 +19,8 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final RoleMapper roleMapper;
+    private final RoleService roleService;
     @Override
     public User save(User user) {
         try {
@@ -28,10 +33,15 @@ public class UserServiceImpl implements UserService {
             if (userRepository.existsByEmail(user.getEmail())) {
                 throw new OperationException("Email Address already exists!");
             }
+
+            Role role = roleMapper.toEntity(user.getRole());
+            user.setRole(role);
+
             return userRepository.save(user);
-        }catch (DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             throw new OperationException("Unique constraint violation" + e);
         }
+
     }
 
     @Override

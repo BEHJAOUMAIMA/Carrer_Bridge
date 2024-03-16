@@ -33,8 +33,6 @@ public class UserRequestDto {
     @Size(min = 8, max = 50, message = "Password must be between 8 and 50 characters long")
     private String password;
 
-    @NotBlank(message = "Role type cannot be empty !")
-    @NotNull(message = "Role type must not be Null")
-    private String roleType;
+    private RoleRequestDto role;
 
 }
