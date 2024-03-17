@@ -6,11 +6,12 @@ import com.example.carrer_bridge.handler.exception.OperationException;
 import com.example.carrer_bridge.repository.RoleRepository;
 import com.example.carrer_bridge.service.RoleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-@Service
+@Component
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;

@@ -1,6 +1,7 @@
 package com.example.carrer_bridge.service;
 
 import com.example.carrer_bridge.domain.entities.Permission;
+import com.example.carrer_bridge.domain.enums.PermissionType;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,4 +14,5 @@ public interface PermissionService {
     Optional<Permission> findById(Long id);
     Permission update(Permission permissionUpdated, Long id);
     void delete(Long id);
+    Optional<Permission> findByName(PermissionType permissionType);
 }
