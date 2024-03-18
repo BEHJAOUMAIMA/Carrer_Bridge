@@ -47,11 +47,16 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public Permission update(Permission permissionUpdated, Long id) {
-        Permission existingPermission = permissionRepository.findById(id)
-                .orElseThrow(() -> new OperationException("Permission not found with id: " + id));
+        Permission existingPermission = permissionRepository.findByPermissionType(permissionUpdated.getPermissionType())
+                .orElseThrow(() -> new OperationException("Permission not found with type: " + permissionUpdated.getPermissionType()));
+        if (!existingPermission.getId().equals(id)) {
+            throw new OperationException("Permission already exists with type: " + permissionUpdated.getPermissionType());
+        }
+
         existingPermission.setPermissionType(permissionUpdated.getPermissionType());
         return permissionRepository.save(existingPermission);
     }
+
 
     @Override
     public void delete(Long id) {

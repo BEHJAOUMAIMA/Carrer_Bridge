@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Service
 public interface RolePermissionService {
-    RolePermission save(RolePermission RolePermission);
+    RolePermission save(RolePermission rolePermission);
     List<RolePermission> findAll();
     Optional<RolePermission> findById(Long id);
     RolePermission update(RolePermission rolePermissionUpdated, Long id);

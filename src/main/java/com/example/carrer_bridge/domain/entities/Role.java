@@ -1,6 +1,7 @@
 package com.example.carrer_bridge.domain.entities;
 
 import com.example.carrer_bridge.domain.enums.RoleType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +23,12 @@ public class Role {
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "role")
     private List<User> users;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
+    private List<RolePermission> rolePermissions;
 
 }
