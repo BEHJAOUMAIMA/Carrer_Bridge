@@ -26,6 +26,9 @@ public class RegisterRequest {
     @NotNull
     private String email;
 
+    @NotBlank
+    private String roleType;
+
     @NotNull
     private String password;
 

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -27,5 +28,10 @@ public class AuthenticationResponse {
 
     @JsonProperty("token_type")
     private String tokenType;
+
+    private String role;
+
+    private Set<String> authorities;
+
 
 }
