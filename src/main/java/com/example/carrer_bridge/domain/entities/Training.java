@@ -18,13 +18,17 @@ public class Training {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String title;
     private String description;
     private Integer duration;
     private LocalDateTime startDate;
     private String location;
+    private Long maxPlaces;
+
+    @ManyToOne
+    private User user;
 
     @ManyToMany(mappedBy = "trainings")
     private List<Professional> professionals;
+
 }

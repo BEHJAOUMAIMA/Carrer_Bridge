@@ -39,7 +39,7 @@ public class User implements UserDetails {
             authorities.add(new SimpleGrantedAuthority(permissionType));
         }
 
-        System.out.println(authorities);
+       // System.out.println(authorities);
         return authorities;
     }
 

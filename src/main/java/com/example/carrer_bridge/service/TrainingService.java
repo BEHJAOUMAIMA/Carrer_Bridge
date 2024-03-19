@@ -13,4 +13,5 @@ public interface TrainingService {
     Optional<Training> findById(Long id);
     Training update(Training trainingUpdated, Long id);
     void delete(Long id);
+    List<Training> findByTitleContaining(String keyword);
 }
