@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -32,6 +33,27 @@ public class User implements UserDetails {
     @JoinColumn(name = "role_id")
     private Role role;
 
+    @OneToMany(mappedBy = "user")
+    private List<Skill> skills;
+
+    @OneToMany(mappedBy = "user")
+    private List<Experience> experiences;
+
+    @OneToMany(mappedBy = "user")
+    private List<Education> education;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_trainings",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "training_id"))
+    private List<Training> trainings;
+
+    private String industry;
+    private String responsibility;
+
+    @OneToMany(mappedBy = "user")
+    private List<JobOpportunity> jobOpportunities;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();

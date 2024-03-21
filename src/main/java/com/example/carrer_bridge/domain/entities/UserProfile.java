@@ -16,7 +16,7 @@ public class UserProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String profileImage;
-    private  String bio;
+    private String bio;
 
     @OneToOne
     @JoinColumn(name = "user_id")

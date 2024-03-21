@@ -1,12 +1,11 @@
 package com.example.carrer_bridge.service.impl;
 
-import com.example.carrer_bridge.domain.entities.Professional;
 import com.example.carrer_bridge.domain.entities.Training;
 import com.example.carrer_bridge.domain.entities.User;
 import com.example.carrer_bridge.domain.enums.RoleType;
 import com.example.carrer_bridge.handler.exception.OperationException;
-import com.example.carrer_bridge.repository.ProfessionalRepository;
 import com.example.carrer_bridge.repository.TrainingRepository;
+import com.example.carrer_bridge.repository.UserRepository;
 import com.example.carrer_bridge.service.TrainingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +20,7 @@ import java.util.Optional;
 public class TrainingServiceImpl implements TrainingService {
 
     private final TrainingRepository trainingRepository;
-    private final ProfessionalRepository professionalRepository;
+    private final UserRepository userRepository;
 
     @Override
     public Training save(Training training) {
@@ -109,8 +108,16 @@ public class TrainingServiceImpl implements TrainingService {
             throw new OperationException("User is not a professional");
         }
 
-        Professional professional = professionalRepository.findById(authenticatedUser.getId())
-                .orElseThrow(() -> new OperationException("Professional not found for user"));
+        Optional<User> optionalProfessional = userRepository.findByRole_RoleType(RoleType.PROFESSIONAL)
+                .stream()
+                .filter(user -> user.getId().equals(authenticatedUser.getId()))
+                .findFirst();
+
+        if (optionalProfessional.isEmpty()) {
+            throw new OperationException("Professional not found for user");
+        }
+
+        User professional = optionalProfessional.get();
 
         Training training = trainingRepository.findById(trainingId)
                 .orElseThrow(() -> new OperationException("Training not found with ID: " + trainingId));
@@ -123,9 +130,16 @@ public class TrainingServiceImpl implements TrainingService {
             throw new OperationException("No available places in the training");
         }
 
+        if (professional.getTrainings().contains(training)) {
+            throw new OperationException("User is already registered for this training");
+        }
+
         training.getProfessionals().add(professional);
 
+        professional.getTrainings().add(training);
+
         trainingRepository.save(training);
+        userRepository.save(professional);
 
         return "Inscription à la formation réussie pour le professionnel.";
     }

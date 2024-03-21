@@ -29,6 +29,6 @@ public class Training {
     private User user;
 
     @ManyToMany(mappedBy = "trainings")
-    private List<Professional> professionals;
+    private List<User> professionals;
 
 }

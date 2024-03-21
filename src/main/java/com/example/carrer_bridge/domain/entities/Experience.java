@@ -19,9 +19,8 @@ public class Experience {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "professional_id")
-    private Professional professional;
-
+    @JoinColumn(name = "user_id")
+    private User user;
     private String title;
     private String description;
     private LocalDate startDate;

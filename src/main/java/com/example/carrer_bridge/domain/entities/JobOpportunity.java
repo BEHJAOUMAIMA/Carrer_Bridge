@@ -21,7 +21,7 @@ public class JobOpportunity {
 
     @ManyToOne
     @JoinColumn(name = "recruiter_id")
-    private Recruiter recruiter;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "company_id")

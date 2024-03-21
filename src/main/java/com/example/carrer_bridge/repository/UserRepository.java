@@ -1,10 +1,12 @@
 package com.example.carrer_bridge.repository;
 
 import com.example.carrer_bridge.domain.entities.User;
+import com.example.carrer_bridge.domain.enums.RoleType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -20,6 +22,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Boolean existsByEmail(String email);
 
     Optional<User> findByEmail(String email);
+    List<User> findByRole_RoleType(RoleType roleType);
 
 
 }

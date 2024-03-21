@@ -19,8 +19,8 @@ public class Education {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "professional_id")
-    private Professional professional;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     private String degree;
     private String institution;
