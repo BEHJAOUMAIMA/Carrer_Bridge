@@ -21,7 +21,7 @@ public class Candidature {
 
     @ManyToOne
     @JoinColumn(name = "professional_id")
-    private Professional professional;
+    private User User;
 
     @ManyToOne
     @JoinColumn(name = "job_opportunity_id")

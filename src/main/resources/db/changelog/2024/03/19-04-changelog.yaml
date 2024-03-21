@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1710831228308-1
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: user
+            constraintName: FK_USER_ON_USER
+  - changeSet:
+      id: 1710831228308-2
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropColumn:
+            columnName: user_id
+            tableName: user
+

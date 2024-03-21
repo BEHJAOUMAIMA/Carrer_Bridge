@@ -1,5 +1,7 @@
 package com.example.carrer_bridge.service.impl;
 
+import com.example.carrer_bridge.domain.entities.Professional;
+import com.example.carrer_bridge.domain.entities.Recruiter;
 import com.example.carrer_bridge.domain.entities.Role;
 import com.example.carrer_bridge.domain.entities.User;
 import com.example.carrer_bridge.domain.enums.RoleType;
@@ -8,6 +10,8 @@ import com.example.carrer_bridge.dto.request.AuthenticationRequest;
 import com.example.carrer_bridge.dto.request.RegisterRequest;
 import com.example.carrer_bridge.dto.response.AuthenticationResponse;
 import com.example.carrer_bridge.handler.exception.OperationException;
+import com.example.carrer_bridge.repository.ProfessionalRepository;
+import com.example.carrer_bridge.repository.RecruiterRepository;
 import com.example.carrer_bridge.repository.RoleRepository;
 import com.example.carrer_bridge.repository.UserRepository;
 import com.example.carrer_bridge.security.jwt.JwtService;
@@ -35,6 +39,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final RoleRepository roleRepository;
     private final AuthenticationManager authenticationManager;
     private final RefreshTokenService refreshTokenService;
+    private final ProfessionalRepository professionalRepository;
+    private final RecruiterRepository recruiterRepository;
     @Override
     public AuthenticationResponse register(RegisterRequest request) {
         if (!request.getPassword().equals(request.getConfirmedPassword())) {

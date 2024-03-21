@@ -1,0 +1,135 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1710862244947-1
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: receiver_id
+            baseTableName: communication
+            constraintName: FK_COMMUNICATION_ON_RECEIVER
+            referencedColumnNames: id
+            referencedTableName: user
+  - changeSet:
+      id: 1710862244947-2
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: sender_id
+            baseTableName: communication
+            constraintName: FK_COMMUNICATION_ON_SENDER
+            referencedColumnNames: id
+            referencedTableName: user
+  - changeSet:
+      id: 1710862244947-3
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: id
+            baseTableName: professional
+            constraintName: FK_PROFESSIONAL_ON_ID
+            referencedColumnNames: id
+            referencedTableName: user
+  - changeSet:
+      id: 1710862244947-4
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: id
+            baseTableName: recruiter
+            constraintName: FK_RECRUITER_ON_ID
+            referencedColumnNames: id
+            referencedTableName: user
+  - changeSet:
+      id: 1710862244947-5
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: refresh_token
+            constraintName: FK_REFRESHTOKEN_ON_USER
+            referencedColumnNames: id
+            referencedTableName: user
+  - changeSet:
+      id: 1710862244947-6
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: training
+            constraintName: FK_TRAINING_ON_USER
+            referencedColumnNames: id
+            referencedTableName: user
+  - changeSet:
+      id: 1710862244947-7
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: user_profile
+            constraintName: FK_USERPROFILE_ON_USER
+            referencedColumnNames: id
+            referencedTableName: user
+  - changeSet:
+      id: 1710862244947-8
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: professional
+            constraintName: FK_PROFESSIONAL_ON_ROLE
+  - changeSet:
+      id: 1710862244947-9
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: recruiter
+            constraintName: FK_RECRUITER_ON_ROLE
+  - changeSet:
+      id: 1710862244947-10
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropColumn:
+            columnName: email
+            tableName: professional
+        - dropColumn:
+            columnName: first_name
+            tableName: professional
+        - dropColumn:
+            columnName: last_name
+            tableName: professional
+        - dropColumn:
+            columnName: password
+            tableName: professional
+        - dropColumn:
+            columnName: role_id
+            tableName: professional
+  - changeSet:
+      id: 1710862244947-11
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropColumn:
+            columnName: email
+            tableName: recruiter
+        - dropColumn:
+            columnName: first_name
+            tableName: recruiter
+        - dropColumn:
+            columnName: last_name
+            tableName: recruiter
+        - dropColumn:
+            columnName: password
+            tableName: recruiter
+        - dropColumn:
+            columnName: role_id
+            tableName: recruiter
+

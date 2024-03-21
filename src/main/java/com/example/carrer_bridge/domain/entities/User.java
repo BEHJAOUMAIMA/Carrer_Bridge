@@ -2,9 +2,9 @@ package com.example.carrer_bridge.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,10 +17,11 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@SuperBuilder
+@Inheritance(strategy = InheritanceType.JOINED)
+@Builder
 public class User implements UserDetails {
     @Id
-    @GeneratedValue ( strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstName;
     private String lastName;

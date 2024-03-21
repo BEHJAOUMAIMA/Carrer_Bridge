@@ -72,4 +72,9 @@ public class TrainingRest {
                 .toList();
         return ResponseEntity.ok(trainingResponseDtos);
     }
+    @PostMapping("/register/{trainingId}")
+    public ResponseEntity<String> registerToTraining(@PathVariable Long trainingId) {
+        String message = trainingService.registerToTraining(trainingId);
+        return ResponseEntity.ok(message);
+    }
 }

@@ -14,4 +14,5 @@ public interface TrainingService {
     Training update(Training trainingUpdated, Long id);
     void delete(Long id);
     List<Training> findByTitleContaining(String keyword);
+    String registerToTraining(Long trainingId);
 }

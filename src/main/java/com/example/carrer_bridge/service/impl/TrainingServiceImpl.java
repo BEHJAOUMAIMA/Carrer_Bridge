@@ -1,9 +1,11 @@
 package com.example.carrer_bridge.service.impl;
 
-import com.example.carrer_bridge.domain.entities.Role;
+import com.example.carrer_bridge.domain.entities.Professional;
 import com.example.carrer_bridge.domain.entities.Training;
 import com.example.carrer_bridge.domain.entities.User;
+import com.example.carrer_bridge.domain.enums.RoleType;
 import com.example.carrer_bridge.handler.exception.OperationException;
+import com.example.carrer_bridge.repository.ProfessionalRepository;
 import com.example.carrer_bridge.repository.TrainingRepository;
 import com.example.carrer_bridge.service.TrainingService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import java.util.Optional;
 public class TrainingServiceImpl implements TrainingService {
 
     private final TrainingRepository trainingRepository;
+    private final ProfessionalRepository professionalRepository;
 
     @Override
     public Training save(Training training) {
@@ -97,5 +100,33 @@ public class TrainingServiceImpl implements TrainingService {
         } else {
             return trainings;
         }
+    }
+
+    @Override
+    public String registerToTraining(Long trainingId) {
+        User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!authenticatedUser.getRole().getRoleType().equals(RoleType.PROFESSIONAL)) {
+            throw new OperationException("User is not a professional");
+        }
+
+        Professional professional = professionalRepository.findById(authenticatedUser.getId())
+                .orElseThrow(() -> new OperationException("Professional not found for user"));
+
+        Training training = trainingRepository.findById(trainingId)
+                .orElseThrow(() -> new OperationException("Training not found with ID: " + trainingId));
+
+        if (training.getStartDate().isBefore(LocalDateTime.now())) {
+            throw new OperationException("Training date is in the past");
+        }
+
+        if (training.getProfessionals().size() >= training.getMaxPlaces()) {
+            throw new OperationException("No available places in the training");
+        }
+
+        training.getProfessionals().add(professional);
+
+        trainingRepository.save(training);
+
+        return "Inscription à la formation réussie pour le professionnel.";
     }
 }
