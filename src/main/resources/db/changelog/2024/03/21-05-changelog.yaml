@@ -1,0 +1,115 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1711020111064-1
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_city
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+            tableName: city
+  - changeSet:
+      id: 1711020111064-2
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_experiencedegree
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: degree
+                  type: VARCHAR(255)
+            tableName: experience_degree
+  - changeSet:
+      id: 1711020111064-3
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_trainingdegree
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: degree
+                  type: VARCHAR(255)
+            tableName: training_degree
+  - changeSet:
+      id: 1711020111064-4
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: city_id
+                  type: BIGINT
+              - column:
+                  name: contract_type
+                  type: SMALLINT
+              - column:
+                  name: experience_degree_id
+                  type: BIGINT
+              - column:
+                  name: training_degree_id
+                  type: BIGINT
+              - column:
+                  name: working_mode
+                  type: SMALLINT
+            tableName: job_opportunity
+  - changeSet:
+      id: 1711020111064-9
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: city_id
+            baseTableName: job_opportunity
+            constraintName: FK_JOBOPPORTUNITY_ON_CITY
+            referencedColumnNames: id
+            referencedTableName: city
+  - changeSet:
+      id: 1711020111064-10
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: experience_degree_id
+            baseTableName: job_opportunity
+            constraintName: FK_JOBOPPORTUNITY_ON_EXPERIENCEDEGREE
+            referencedColumnNames: id
+            referencedTableName: experience_degree
+  - changeSet:
+      id: 1711020111064-11
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: training_degree_id
+            baseTableName: job_opportunity
+            constraintName: FK_JOBOPPORTUNITY_ON_TRAININGDEGREE
+            referencedColumnNames: id
+            referencedTableName: training_degree
+

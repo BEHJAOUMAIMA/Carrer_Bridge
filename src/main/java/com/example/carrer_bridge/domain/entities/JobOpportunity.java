@@ -1,5 +1,7 @@
 package com.example.carrer_bridge.domain.entities;
 
+import com.example.carrer_bridge.domain.enums.ContractType;
+import com.example.carrer_bridge.domain.enums.WorkingMode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,6 +33,16 @@ public class JobOpportunity {
     private String description;
     private String requiredSkills;
     private LocalDateTime expirationDate;
+    private ContractType contractType;
+    private WorkingMode workingMode;
+    @ManyToOne
+    private City city;
+    @ManyToOne
+    private ExperienceDegree experienceDegree;
+    @ManyToOne
+    private TrainingDegree trainingDegree;
+
+
 
     @OneToMany(mappedBy = "jobOpportunity")
     private List<Candidature> candidatures;
