@@ -1,0 +1,61 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1711001259224-1
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: company
+                  type: VARCHAR(255)
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: full_name
+                  type: VARCHAR(255)
+              - column:
+                  name: message
+                  type: VARCHAR(255)
+              - column:
+                  name: number
+                  type: VARCHAR(255)
+              - column:
+                  name: subject
+                  type: VARCHAR(255)
+            tableName: communication
+  - changeSet:
+      id: 1711001259224-7
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: communication
+            constraintName: FK_COMMUNICATION_ON_RECEIVER
+  - changeSet:
+      id: 1711001259224-8
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: communication
+            constraintName: FK_COMMUNICATION_ON_SENDER
+  - changeSet:
+      id: 1711001259224-9
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropColumn:
+            columnName: content
+            tableName: communication
+        - dropColumn:
+            columnName: receiver_id
+            tableName: communication
+        - dropColumn:
+            columnName: sender_id
+            tableName: communication
+        - dropColumn:
+            columnName: sending_date
+            tableName: communication
+
