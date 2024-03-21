@@ -18,11 +18,9 @@ public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
     private String description;
     private String industry;
-
     @OneToMany(mappedBy = "company")
     private List<JobOpportunity> jobOpportunities;
 }

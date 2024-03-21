@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,22 +30,33 @@ public class JobOpportunity {
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
-
     private String title;
     private String description;
     private String requiredSkills;
     private LocalDateTime expirationDate;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
+    @Enumerated(EnumType.STRING)
     private ContractType contractType;
+
+    @Enumerated(EnumType.STRING)
     private WorkingMode workingMode;
+
     @ManyToOne
     private City city;
+
     @ManyToOne
     private ExperienceDegree experienceDegree;
+
     @ManyToOne
     private TrainingDegree trainingDegree;
 
-
-
     @OneToMany(mappedBy = "jobOpportunity")
     private List<Candidature> candidatures;
+
 }

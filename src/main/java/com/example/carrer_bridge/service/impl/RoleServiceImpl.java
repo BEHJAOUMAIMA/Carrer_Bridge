@@ -55,7 +55,6 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void delete(Long id) {
-
         Role existingRole = roleRepository.findById(id)
                 .orElseThrow(() -> new OperationException("Role not found with id: " + id));
         roleRepository.delete(existingRole);

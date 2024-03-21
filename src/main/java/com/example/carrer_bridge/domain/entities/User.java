@@ -33,6 +33,7 @@ public class User implements UserDetails {
     @JoinColumn(name = "role_id")
     private Role role;
 
+
     @OneToMany(mappedBy = "user")
     private List<Skill> skills;
 
@@ -48,7 +49,6 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "training_id"))
     private List<Training> trainings;
-
     private String industry;
     private String responsibility;
 
