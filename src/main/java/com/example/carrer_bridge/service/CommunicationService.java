@@ -13,4 +13,5 @@ public interface CommunicationService {
     Optional<Communication> findById(Long id);
     Communication update(Communication communicationUpdated, Long id);
     void delete(Long id);
+    String processCommunicationBySubject(String subject);
 }
