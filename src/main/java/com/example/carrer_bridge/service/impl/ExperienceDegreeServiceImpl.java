@@ -47,6 +47,10 @@ public class ExperienceDegreeServiceImpl implements ExperienceDegreeService {
     public ExperienceDegree update(ExperienceDegree experienceDegreeUpdated, Long id) {
         ExperienceDegree existingExperienceDegree = experienceDegreeRepository.findById(id)
                 .orElseThrow(() -> new OperationException("Experience Degree not found with id: " + id));
+
+        if (experienceDegreeRepository.existsByDegree(experienceDegreeUpdated.getDegree())) {
+            throw new OperationException("Experience Degree with this name already exists");
+        }
         existingExperienceDegree.setDegree(experienceDegreeUpdated.getDegree());
         return experienceDegreeRepository.save(existingExperienceDegree);
     }

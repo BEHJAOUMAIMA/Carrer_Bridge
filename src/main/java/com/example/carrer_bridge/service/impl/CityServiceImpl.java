@@ -49,7 +49,9 @@ public class CityServiceImpl implements CityService {
     public City update(City cityUpdated, Long id) {
         City existingCity = cityRepository.findById(id)
                 .orElseThrow(() -> new OperationException("City not found with id: " + id));
-
+        if (cityRepository.existsByName(existingCity.getName())) {
+            throw new OperationException("City with this name already exists");
+        }
         existingCity.setName(cityUpdated.getName());
         return cityRepository.save(existingCity);
     }
