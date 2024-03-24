@@ -15,5 +15,7 @@ public interface EducationService {
     Optional<Education> findById(Long id);
     Education update(Education educationUpdated, Long id);
     void delete(Long id);
+    List<Education> findEducationByDegree(String degree);
+    List<Education> findEducationsByUser();
 
 }

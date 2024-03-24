@@ -15,4 +15,6 @@ public class UserEducationResponse {
     private String degree;
     private String institution;
     private LocalDate graduationDate;
+    private UserResponseDto user;
+
 }
