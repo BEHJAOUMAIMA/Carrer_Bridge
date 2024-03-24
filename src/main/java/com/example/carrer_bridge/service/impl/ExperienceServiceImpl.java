@@ -23,7 +23,7 @@ public class ExperienceServiceImpl implements ExperienceService {
     @Override
     public Experience save(Experience experience) {
         User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        authenticatedUser = userRepository.findByIdWithEducation(authenticatedUser.getId())
+        authenticatedUser = userRepository.findByIdWithExperiences(authenticatedUser.getId())
                 .orElseThrow(() -> new OperationException("User not found"));
 
         if (experience.getTitle() == null || experience.getTitle().isEmpty()) {
