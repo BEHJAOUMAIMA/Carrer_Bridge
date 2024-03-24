@@ -101,7 +101,8 @@ public class EducationServiceImpl implements EducationService{
         existingEducation.setInstitution(educationUpdated.getInstitution());
         existingEducation.setGraduationDate(educationUpdated.getGraduationDate());
 
-        return educationRepository.save(existingEducation);    }
+        return educationRepository.save(existingEducation);
+    }
     @Override
     public void delete(Long id) {
         Education existingEducation = educationRepository.findById(id)

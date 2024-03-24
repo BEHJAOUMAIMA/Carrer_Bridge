@@ -21,7 +21,9 @@ public class UserExperienceRequest {
     @NotBlank
     private String description;
 
+    @NotNull
     private LocalDate startDate;
 
+    @NotNull
     private LocalDate endDate;
 }

@@ -1,6 +1,5 @@
 package com.example.carrer_bridge.service;
 
-
 import com.example.carrer_bridge.domain.entities.Experience;
 import org.springframework.stereotype.Service;
 
@@ -14,4 +13,6 @@ public interface ExperienceService {
     Optional<Experience> findById(Long id);
     Experience update(Experience experienceUpdated, Long id);
     void delete(Long id);
+    List<Experience> findExperienceByTitle(String title);
+    List<Experience> findExperiencesByUser();
 }
