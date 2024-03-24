@@ -34,16 +34,16 @@ public class User implements UserDetails {
     private Role role;
 
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Skill> skills;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",  fetch = FetchType.EAGER)
     private List<Experience> experiences;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",  fetch = FetchType.EAGER)
     private List<Education> education;
 
-    @ManyToMany
+    @ManyToMany( fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_trainings",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -52,8 +52,7 @@ public class User implements UserDetails {
     private String industry;
     private String responsibility;
 
-    @OneToMany(mappedBy = "user")
-    private List<JobOpportunity> jobOpportunities;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();

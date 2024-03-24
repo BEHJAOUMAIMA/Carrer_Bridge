@@ -23,9 +23,6 @@ public class Role {
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "role")
-    private List<User> users;
 
     @JsonIgnore
     @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)

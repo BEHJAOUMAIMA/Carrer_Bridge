@@ -1,5 +1,6 @@
 package com.example.carrer_bridge.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +22,5 @@ public class Company {
     private String name;
     private String description;
     private String industry;
-    @OneToMany(mappedBy = "company")
-    private List<JobOpportunity> jobOpportunities;
+
 }

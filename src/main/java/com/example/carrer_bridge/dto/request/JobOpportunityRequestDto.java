@@ -17,9 +17,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class JobOpportunityRequestDto {
 
-    @NotNull(message = "Recruiter ID cannot be null")
-    private Long recruiterId;
-
     @NotNull(message = "Company ID cannot be null")
     private Long companyId;
 

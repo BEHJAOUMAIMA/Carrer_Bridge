@@ -13,7 +13,6 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -26,9 +25,10 @@ public class JobOpportunityServiceImpl implements JobOpportunityService {
 
     @Override
     public JobOpportunity save(JobOpportunity jobOpportunity) {
+        // toDO: validation fo the ids of the ...
         User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(!authenticatedUser.getRole().getRoleType().equals(RoleType.RECRUITER) &&
-        !authenticatedUser.getRole().getRoleType().equals(RoleType.ADMINISTRATOR)){
+            !authenticatedUser.getRole().getRoleType().equals(RoleType.ADMINISTRATOR)){
             throw new OperationException("User is not authorized to create a job opportunity");
         }
         if (jobOpportunityRepository.existsByTitleAndUser_IdAndCompany_Id(jobOpportunity.getTitle(),

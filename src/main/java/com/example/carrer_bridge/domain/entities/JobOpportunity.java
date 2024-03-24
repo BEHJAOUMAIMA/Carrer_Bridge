@@ -2,6 +2,7 @@ package com.example.carrer_bridge.domain.entities;
 
 import com.example.carrer_bridge.domain.enums.ContractType;
 import com.example.carrer_bridge.domain.enums.WorkingMode;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +24,7 @@ public class JobOpportunity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "recruiter_id")
     private User user;
 
@@ -56,7 +57,8 @@ public class JobOpportunity {
     @ManyToOne
     private TrainingDegree trainingDegree;
 
-    @OneToMany(mappedBy = "jobOpportunity")
+    @OneToMany(mappedBy = "jobOpportunity", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Candidature> candidatures;
 
 }
