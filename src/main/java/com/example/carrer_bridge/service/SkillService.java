@@ -1,6 +1,7 @@
 package com.example.carrer_bridge.service;
 
 import com.example.carrer_bridge.domain.entities.Skill;
+import com.example.carrer_bridge.domain.entities.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,4 +14,7 @@ public interface SkillService {
     Optional<Skill> findById(Long id);
     Skill update(Skill skillUpdated, Long id);
     void delete(Long id);
+    List<Skill> findSkillsByName(String name);
+    List<Skill> findSkillsByUser();
+
 }

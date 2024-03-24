@@ -26,6 +26,6 @@ public class TrainingResponseDto {
 
     private Long maxPlaces;
 
-    private User user;
+    private UserResponseDto user;
 
 }

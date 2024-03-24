@@ -21,6 +21,7 @@ public class Experience {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
     private String title;
     private String description;
     private LocalDate startDate;

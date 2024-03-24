@@ -1,5 +1,6 @@
 package com.example.carrer_bridge.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,7 +44,8 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user",  fetch = FetchType.EAGER)
     private List<Education> education;
 
-    @ManyToMany( fetch = FetchType.EAGER)
+    @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = "user_trainings",
             joinColumns = @JoinColumn(name = "user_id"),

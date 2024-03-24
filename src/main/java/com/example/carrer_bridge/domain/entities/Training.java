@@ -1,5 +1,6 @@
 package com.example.carrer_bridge.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,7 +29,8 @@ public class Training {
     @ManyToOne
     private User user;
 
-    @ManyToMany(mappedBy = "trainings")
+    @ManyToMany(mappedBy = "trainings" , fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<User> professionals;
 
 }
