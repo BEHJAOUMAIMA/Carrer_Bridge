@@ -20,8 +20,8 @@ public class Candidature {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "professional_id")
-    private User User;
+    @JoinColumn(name = "professional_id", referencedColumnName = "id")
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "job_opportunity_id")

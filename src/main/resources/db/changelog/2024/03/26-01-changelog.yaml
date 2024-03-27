@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 1710999788060-1
+      id: 1711458286981-1
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -28,7 +28,26 @@ databaseChangeLog:
                   type: VARCHAR(255)
             tableName: candidature
   - changeSet:
-      id: 1710999788060-2
+      id: 1711458286981-2
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_city
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+            tableName: city
+  - changeSet:
+      id: 1711458286981-3
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -43,20 +62,26 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  name: sender_id
-                  type: BIGINT
-              - column:
-                  name: receiver_id
-                  type: BIGINT
-              - column:
-                  name: content
+                  name: full_name
                   type: VARCHAR(255)
               - column:
-                  name: sending_date
-                  type: DATETIME
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: company
+                  type: VARCHAR(255)
+              - column:
+                  name: number
+                  type: VARCHAR(255)
+              - column:
+                  name: subject
+                  type: VARCHAR(255)
+              - column:
+                  name: message
+                  type: VARCHAR(255)
             tableName: communication
   - changeSet:
-      id: 1710999788060-3
+      id: 1711458286981-4
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -81,7 +106,7 @@ databaseChangeLog:
                   type: VARCHAR(255)
             tableName: company
   - changeSet:
-      id: 1710999788060-4
+      id: 1711458286981-5
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -109,7 +134,7 @@ databaseChangeLog:
                   type: DATE
             tableName: education
   - changeSet:
-      id: 1710999788060-5
+      id: 1711458286981-6
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -140,7 +165,26 @@ databaseChangeLog:
                   type: DATE
             tableName: experience
   - changeSet:
-      id: 1710999788060-6
+      id: 1711458286981-7
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_experiencedegree
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: degree
+                  type: VARCHAR(255)
+            tableName: experience_degree
+  - changeSet:
+      id: 1711458286981-8
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -172,9 +216,30 @@ databaseChangeLog:
               - column:
                   name: expiration_date
                   type: DATETIME
+              - column:
+                  name: created_at
+                  type: DATETIME
+              - column:
+                  name: updated_at
+                  type: DATETIME
+              - column:
+                  name: contract_type
+                  type: VARCHAR(255)
+              - column:
+                  name: working_mode
+                  type: VARCHAR(255)
+              - column:
+                  name: city_id
+                  type: BIGINT
+              - column:
+                  name: experience_degree_id
+                  type: BIGINT
+              - column:
+                  name: training_degree_id
+                  type: BIGINT
             tableName: job_opportunity
   - changeSet:
-      id: 1710999788060-7
+      id: 1711458286981-9
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -193,7 +258,7 @@ databaseChangeLog:
                   type: VARCHAR(255)
             tableName: permission
   - changeSet:
-      id: 1710999788060-8
+      id: 1711458286981-10
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -227,7 +292,7 @@ databaseChangeLog:
                   type: BOOLEAN
             tableName: refresh_token
   - changeSet:
-      id: 1710999788060-9
+      id: 1711458286981-11
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -246,7 +311,7 @@ databaseChangeLog:
                   type: VARCHAR(255)
             tableName: role
   - changeSet:
-      id: 1710999788060-10
+      id: 1711458286981-12
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -268,7 +333,7 @@ databaseChangeLog:
                   type: BIGINT
             tableName: role_permission
   - changeSet:
-      id: 1710999788060-11
+      id: 1711458286981-13
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -293,7 +358,7 @@ databaseChangeLog:
                   type: INT
             tableName: skill
   - changeSet:
-      id: 1710999788060-12
+      id: 1711458286981-14
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -330,7 +395,26 @@ databaseChangeLog:
                   type: BIGINT
             tableName: training
   - changeSet:
-      id: 1710999788060-13
+      id: 1711458286981-15
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_trainingdegree
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: degree
+                  type: VARCHAR(255)
+            tableName: training_degree
+  - changeSet:
+      id: 1711458286981-16
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -367,7 +451,7 @@ databaseChangeLog:
                   type: VARCHAR(255)
             tableName: user
   - changeSet:
-      id: 1710999788060-14
+      id: 1711458286981-17
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -392,7 +476,25 @@ databaseChangeLog:
                   type: BIGINT
             tableName: user_profile
   - changeSet:
-      id: 1710999788060-15
+      id: 1711458286981-18
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: training_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: user_id
+                  type: BIGINT
+            tableName: user_trainings
+  - changeSet:
+      id: 1711458286981-19
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -401,7 +503,7 @@ databaseChangeLog:
             constraintName: uc_refreshtoken_token
             tableName: refresh_token
   - changeSet:
-      id: 1710999788060-16
+      id: 1711458286981-20
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -412,7 +514,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: job_opportunity
   - changeSet:
-      id: 1710999788060-17
+      id: 1711458286981-21
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -423,29 +525,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: user
   - changeSet:
-      id: 1710999788060-18
-      author: OUMA (generated)
-      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
-      changes:
-        - addForeignKeyConstraint:
-            baseColumnNames: receiver_id
-            baseTableName: communication
-            constraintName: FK_COMMUNICATION_ON_RECEIVER
-            referencedColumnNames: id
-            referencedTableName: user
-  - changeSet:
-      id: 1710999788060-19
-      author: OUMA (generated)
-      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
-      changes:
-        - addForeignKeyConstraint:
-            baseColumnNames: sender_id
-            baseTableName: communication
-            constraintName: FK_COMMUNICATION_ON_SENDER
-            referencedColumnNames: id
-            referencedTableName: user
-  - changeSet:
-      id: 1710999788060-20
+      id: 1711458286981-22
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -456,7 +536,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: user
   - changeSet:
-      id: 1710999788060-21
+      id: 1711458286981-23
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -467,7 +547,18 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: user
   - changeSet:
-      id: 1710999788060-22
+      id: 1711458286981-24
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: city_id
+            baseTableName: job_opportunity
+            constraintName: FK_JOBOPPORTUNITY_ON_CITY
+            referencedColumnNames: id
+            referencedTableName: city
+  - changeSet:
+      id: 1711458286981-25
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -478,7 +569,18 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: company
   - changeSet:
-      id: 1710999788060-23
+      id: 1711458286981-26
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: experience_degree_id
+            baseTableName: job_opportunity
+            constraintName: FK_JOBOPPORTUNITY_ON_EXPERIENCEDEGREE
+            referencedColumnNames: id
+            referencedTableName: experience_degree
+  - changeSet:
+      id: 1711458286981-27
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -489,7 +591,18 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: user
   - changeSet:
-      id: 1710999788060-24
+      id: 1711458286981-28
+      author: OUMA (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: training_degree_id
+            baseTableName: job_opportunity
+            constraintName: FK_JOBOPPORTUNITY_ON_TRAININGDEGREE
+            referencedColumnNames: id
+            referencedTableName: training_degree
+  - changeSet:
+      id: 1711458286981-29
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -500,7 +613,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: user
   - changeSet:
-      id: 1710999788060-25
+      id: 1711458286981-30
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -511,7 +624,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: permission
   - changeSet:
-      id: 1710999788060-26
+      id: 1711458286981-31
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -522,7 +635,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: role
   - changeSet:
-      id: 1710999788060-27
+      id: 1711458286981-32
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -533,7 +646,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: user
   - changeSet:
-      id: 1710999788060-28
+      id: 1711458286981-33
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -544,7 +657,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: user
   - changeSet:
-      id: 1710999788060-29
+      id: 1711458286981-34
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -555,7 +668,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: user
   - changeSet:
-      id: 1710999788060-30
+      id: 1711458286981-35
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -566,7 +679,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: role
   - changeSet:
-      id: 1710999788060-31
+      id: 1711458286981-36
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -577,7 +690,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: training
   - changeSet:
-      id: 1710999788060-32
+      id: 1711458286981-37
       author: OUMA (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:

@@ -1,6 +1,8 @@
 package com.example.carrer_bridge.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +31,9 @@ public class User implements UserDetails {
     private String lastName;
     private String email;
     private String password;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private UserProfile userProfile;
 
     @ManyToOne
     @JoinColumn(name = "role_id")

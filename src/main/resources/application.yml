@@ -18,3 +18,6 @@ application:
       expiration: 1728000000
       refresh-token:
         expiration: 1728000000
+upload:
+  dir:
+    path: ./src/main/resources/static/profile-images

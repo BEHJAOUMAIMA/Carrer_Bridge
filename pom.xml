@@ -94,6 +94,10 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-jackson</artifactId>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -191,7 +195,7 @@
                         </goals>
                         <configuration>
                             <files>
-                                <file>sonar-project.properties</file>
+                                <file>src/sonar-project.properties</file>
                             </files>
                         </configuration>
                     </execution>

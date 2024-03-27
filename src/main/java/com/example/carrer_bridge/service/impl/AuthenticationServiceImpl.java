@@ -2,6 +2,7 @@ package com.example.carrer_bridge.service.impl;
 
 import com.example.carrer_bridge.domain.entities.Role;
 import com.example.carrer_bridge.domain.entities.User;
+import com.example.carrer_bridge.domain.entities.UserProfile;
 import com.example.carrer_bridge.domain.enums.RoleType;
 import com.example.carrer_bridge.domain.enums.TokenType;
 import com.example.carrer_bridge.dto.request.AuthenticationRequest;
@@ -56,6 +57,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(role)
                 .build();
+
+        UserProfile userProfile = UserProfile.builder()
+                .user(user)
+                .build();
+
+        user.setUserProfile(userProfile);
+
+        user = userRepository.save(user);
+
         Set<String> authorities = user.getRole().getRolePermissions().stream()
                 .map(rolePermission -> rolePermission.getPermission().getPermissionType().name())
                 .collect(Collectors.toSet());
