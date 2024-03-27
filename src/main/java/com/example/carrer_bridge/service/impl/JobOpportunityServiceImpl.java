@@ -25,7 +25,7 @@ public class JobOpportunityServiceImpl implements JobOpportunityService {
 
     @Override
     public JobOpportunity save(JobOpportunity jobOpportunity) {
-        // toDO: validation fo the ids of the ...
+
         User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(!authenticatedUser.getRole().getRoleType().equals(RoleType.RECRUITER) &&
             !authenticatedUser.getRole().getRoleType().equals(RoleType.ADMINISTRATOR)){
