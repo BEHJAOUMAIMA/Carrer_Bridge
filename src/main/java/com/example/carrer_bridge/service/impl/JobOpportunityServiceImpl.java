@@ -1,15 +1,11 @@
 package com.example.carrer_bridge.service.impl;
 
 import com.example.carrer_bridge.domain.entities.*;
-import com.example.carrer_bridge.domain.enums.ContractType;
 import com.example.carrer_bridge.domain.enums.RoleType;
-import com.example.carrer_bridge.domain.enums.WorkingMode;
 import com.example.carrer_bridge.handler.exception.OperationException;
 import com.example.carrer_bridge.repository.JobOpportunityRepository;
 import com.example.carrer_bridge.service.JobOpportunityService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -118,31 +114,7 @@ public class JobOpportunityServiceImpl implements JobOpportunityService {
     }
 
     @Override
-    public List<JobOpportunity> findByCriteria(String title, String description,
-                                               String requiredSkills, LocalDateTime expirationDate,
-                                               ContractType contractType, WorkingMode workingMode,
-                                               City city, ExperienceDegree experienceDegree,
-                                               TrainingDegree trainingDegree, LocalDateTime createdAt) {
-
-        JobOpportunity example = JobOpportunity.builder()
-                .title(title)
-                .description(description)
-                .requiredSkills(requiredSkills)
-                .expirationDate(expirationDate)
-                .contractType(contractType)
-                .workingMode(workingMode)
-                .city(city)
-                .experienceDegree(experienceDegree)
-                .trainingDegree(trainingDegree)
-                .createdAt(createdAt)
-                .build();
-
-        ExampleMatcher matcher = ExampleMatcher.matching()
-                .withIgnoreCase()
-                .withIgnoreNullValues()
-                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
-
-        Example<JobOpportunity> jobOpportunityExample = Example.of(example, matcher);
-        return jobOpportunityRepository.findAll(jobOpportunityExample);
+    public List<JobOpportunity> filterJobOpportunities(String title, String companyName, String jobCity) {
+        return jobOpportunityRepository.filterJobOpportunities(title, companyName, jobCity);
     }
 }

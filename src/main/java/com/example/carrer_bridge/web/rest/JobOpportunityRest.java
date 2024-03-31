@@ -107,27 +107,18 @@ public class JobOpportunityRest {
         return ResponseMessage.ok("Job Opportunity deleted successfully with ID: " + id, null);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<JobOpportunityResponseDto>> searchJobOpportunities(
+    @GetMapping("/filter")
+    public ResponseEntity<List<JobOpportunityResponseDto>> filterJobOpportunities(
             @RequestParam(required = false) String title,
-            @RequestParam(required = false) String description,
-            @RequestParam(required = false) String requiredSkills,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime expirationDate,
-            @RequestParam(required = false) ContractType contractType,
-            @RequestParam(required = false) WorkingMode workingMode,
-            @RequestParam(required = false) City city,
-            @RequestParam(required = false) ExperienceDegree experienceDegree,
-            @RequestParam(required = false) TrainingDegree trainingDegree,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdAt) {
+            @RequestParam(required = false) String companyName,
+            @RequestParam(required = false) String jobCity
+    ) {
 
-        List<JobOpportunity> jobOpportunities = jobOpportunityService.findByCriteria(
-                title, description, requiredSkills, expirationDate, contractType,
-                workingMode, city, experienceDegree, trainingDegree, createdAt);
-
+        List<JobOpportunity> jobOpportunities = jobOpportunityService.filterJobOpportunities(title, companyName, jobCity);
         List<JobOpportunityResponseDto> jobOpportunityResponseDtos = jobOpportunities.stream()
                 .map(jobOpportunityMapper::toResponseDto)
                 .toList();
-
         return ResponseEntity.ok(jobOpportunityResponseDtos);
+
     }
 }
