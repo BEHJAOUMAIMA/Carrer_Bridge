@@ -1,5 +1,7 @@
 package com.example.carrer_bridge.dto.request;
 
+import com.example.carrer_bridge.domain.entities.Candidature;
+import com.example.carrer_bridge.domain.entities.JobOpportunity;
 import com.example.carrer_bridge.domain.enums.CandidatureStatus;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -20,4 +22,11 @@ public class CandidatureRequestDto {
 
     private CandidatureStatus status = CandidatureStatus.PENDING;
 
+    public Candidature toCandidature() {
+        return Candidature.builder()
+                .jobOpportunity(JobOpportunity.builder().id(jobOpportunityId).build())
+                .applicationDate(applicationDate)
+                .status(status)
+                .build();
+    }
 }

@@ -15,5 +15,5 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     List<Training> findByTitleAndUser(String title, User user);
     @Query("SELECT t FROM Training t WHERE LOWER(t.title) LIKE %:keyword%")
     List<Training> findByTitleContainingKeyword(@Param("keyword") String keyword);
-
+    List<Training> findByUser(User user);
 }

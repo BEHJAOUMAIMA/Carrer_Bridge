@@ -75,9 +75,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
         return AuthenticationResponse.builder()
+                .firstname((user.getFirstName()))
+                .lastname(user.getLastName())
                 .accessToken(jwt)
                 .email(user.getEmail())
-                .id(user.getId())
                 .refreshToken(refreshToken.getToken())
                 .tokenType( TokenType.BEARER.name())
                 .role(user.getRole().getRoleType().name())
@@ -100,9 +101,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .collect(Collectors.toSet());
 
         return AuthenticationResponse.builder()
+                .firstname((user.getFirstName()))
+                .lastname(user.getLastName())
                 .accessToken(jwt)
                 .email(user.getEmail())
-                .id(user.getId())
                 .refreshToken(refreshToken.getToken())
                 .tokenType( TokenType.BEARER.name())
                 .role(roleType)

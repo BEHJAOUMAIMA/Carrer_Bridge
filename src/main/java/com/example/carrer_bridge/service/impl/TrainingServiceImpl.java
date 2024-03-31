@@ -8,6 +8,7 @@ import com.example.carrer_bridge.repository.TrainingRepository;
 import com.example.carrer_bridge.repository.UserRepository;
 import com.example.carrer_bridge.service.TrainingService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -38,12 +39,15 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public List<Training> findAll() {
-        List<Training> trainings = trainingRepository.findAll();
-        if (trainings.isEmpty()) {
-            throw new OperationException("No Trainings found!");
-        } else {
-            return trainings;
-        }
+
+        User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        RoleType userRole = authenticatedUser.getRole().getRoleType();
+
+        return switch (userRole) {
+            case ADMINISTRATOR -> trainingRepository.findAll();
+            case RECRUITER -> trainingRepository.findByUser(authenticatedUser);
+            default -> throw new OperationException("Role not supported: " + userRole);
+        };
     }
 
     @Override
@@ -142,5 +146,21 @@ public class TrainingServiceImpl implements TrainingService {
         userRepository.save(professional);
 
         return "Inscription à la formation réussie pour le professionnel.";
+    }
+
+    @Override
+    public List<Training> getTraining() {
+        return trainingRepository.findAll();
+    }
+
+    @Override
+    public List<Training> findTrainingsForCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User authenticatedUser = (User) authentication.getPrincipal();
+
+        List<Training> trainings = authenticatedUser.getTrainings();
+        trainings.size();
+
+        return trainings;
     }
 }

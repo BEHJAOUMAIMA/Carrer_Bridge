@@ -2,13 +2,21 @@ package com.example.carrer_bridge.service.impl;
 
 import com.example.carrer_bridge.domain.entities.Role;
 import com.example.carrer_bridge.domain.entities.User;
+import com.example.carrer_bridge.domain.entities.UserProfile;
+import com.example.carrer_bridge.domain.enums.RoleType;
 import com.example.carrer_bridge.handler.exception.OperationException;
 import com.example.carrer_bridge.mappers.RoleMapper;
+import com.example.carrer_bridge.repository.RoleRepository;
 import com.example.carrer_bridge.repository.UserRepository;
 import com.example.carrer_bridge.service.RoleService;
 import com.example.carrer_bridge.service.UserService;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.EnumUtils;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,75 +27,80 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final RoleMapper roleMapper;
-    private final RoleService roleService;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+
     @Override
+    @Transactional
     public User save(User user) {
-        try {
-            if (userRepository.existsByFirstName(user.getFirstName())) {
-                throw new OperationException("Firstname already exists!");
-            }
-            if (userRepository.existsByLastName(user.getLastName())) {
-                throw new OperationException("Lastname already exists!");
-            }
-            if (userRepository.existsByEmail(user.getEmail())) {
-                throw new OperationException("Email Address already exists!");
-            }
 
-            Role role = roleMapper.toEntity(user.getRole());
-            user.setRole(role);
-
-            return userRepository.save(user);
-        } catch (DataIntegrityViolationException e) {
-            throw new OperationException("Unique constraint violation" + e);
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new OperationException("Email already exists");
         }
 
+        RoleType roleType = user.getRole().getRoleType();
+        Role role = roleRepository.findByRoleType(roleType)
+                .orElseThrow(() -> new OperationException("Role not found or invalid"));
+
+        user.setRole(role);
+
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+
+        UserProfile userProfile = UserProfile.builder()
+                .user(user)
+                .build();
+
+        user.setUserProfile(userProfile);
+
+        return userRepository.save(user);
     }
 
     @Override
     public List<User> findAll() {
-        List<User> users = userRepository.findAll();
-
-        if (users.isEmpty()) {
-            throw new OperationException("No Users found");
-        }
-
-        return users;
+        return userRepository.findAll();
     }
 
     @Override
     public Optional<User> findById(Long id) {
-        if (id <= 0) {
-            throw new OperationException("ID must be greater than 0");
-        }
         return userRepository.findById(id);
     }
 
     @Override
+    @Transactional
     public User update(User userUpdated, Long id) {
-        return userRepository.findById(id)
-                .map(user -> {
-                    user.setFirstName(userUpdated.getFirstName());
-                    user.setLastName(userUpdated.getLastName());
-                    user.setEmail(userUpdated.getEmail());
-                    user.setPassword(userUpdated.getPassword());
-                    user.setRole(user.getRole());
-                    return userRepository.save(user);
-                })
-                .orElseThrow(() -> new OperationException("User not found with id: " + id));
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new OperationException("User not found"));
+
+        existingUser.setFirstName(userUpdated.getFirstName());
+        existingUser.setLastName(userUpdated.getLastName());
+
+        if (!existingUser.getRole().getRoleType().equals(userUpdated.getRole().getRoleType())) {
+
+            RoleType roleType = userUpdated.getRole().getRoleType();
+            Role role = roleRepository.findByRoleType(roleType)
+                    .orElseThrow(() -> new OperationException("New role not found or invalid"));
+            existingUser.setRole(role);
+        }
+
+        if (!existingUser.getEmail().equals(userUpdated.getEmail()) &&
+                userRepository.existsByEmail(userUpdated.getEmail())) {
+            throw new IllegalArgumentException("Email already exists");
+        }
+        existingUser.setEmail(userUpdated.getEmail());
+
+
+        if (userUpdated.getPassword() != null && !userUpdated.getPassword().isEmpty()) {
+            String encodedPassword = passwordEncoder.encode(userUpdated.getPassword());
+            existingUser.setPassword(encodedPassword);
+        }
+
+        return userRepository.save(existingUser);
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
-        if (id <= 0) {
-            throw new OperationException("ID must be greater than 0");
-        }
-
-        Optional<User> user = userRepository.findById(id);
-        if (user.isEmpty()) {
-            throw new OperationException("User not found with ID: " + id);
-        }
-
         userRepository.deleteById(id);
     }
 }

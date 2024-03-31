@@ -17,6 +17,7 @@ import java.util.Optional;
 public interface JobOpportunityService {
     JobOpportunity save(JobOpportunity jobOpportunity);
     List<JobOpportunity> findAll();
+    List<JobOpportunity> getJobs();
     Optional<JobOpportunity> findById(Long id);
     JobOpportunity update(JobOpportunity jobOpportunityUpdated, Long id);
     void delete(Long id);

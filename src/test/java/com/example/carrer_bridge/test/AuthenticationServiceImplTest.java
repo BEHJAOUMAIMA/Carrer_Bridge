@@ -75,7 +75,6 @@ public class AuthenticationServiceImplTest {
                 .build();
 
         AuthenticationResponse expectedResponse = AuthenticationResponse.builder()
-                .id(1L)
                 .email("john.doe@example.com")
                 .accessToken("jwtToken")
                 .refreshToken("refreshToken")
@@ -132,7 +131,6 @@ public class AuthenticationServiceImplTest {
 
 
         AuthenticationResponse expectedResponse = AuthenticationResponse.builder()
-                .id(1L)
                 .email("john.doe@example.com")
                 .accessToken("jwtToken")
                 .refreshToken("refreshToken")
@@ -241,7 +239,6 @@ public class AuthenticationServiceImplTest {
 
         AuthenticationResponse response = authenticationService.register(request);
         assertEquals("john.doe@example.com", response.getEmail());
-        assertEquals(1L, response.getId().longValue());
     }
 
 

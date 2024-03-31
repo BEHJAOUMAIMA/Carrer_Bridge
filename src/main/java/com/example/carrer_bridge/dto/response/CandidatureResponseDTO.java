@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class CandidatureResponseDTO {
 
     private Long id;
-    private UserResponseDto professional;
+    private UserResponseDto user;
     private JobOpportunityResponseDto jobOpportunity;
     private LocalDateTime applicationDate;
     private CandidatureStatus status;

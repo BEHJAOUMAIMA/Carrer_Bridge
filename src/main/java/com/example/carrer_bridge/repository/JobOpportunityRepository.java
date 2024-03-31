@@ -1,11 +1,15 @@
 package com.example.carrer_bridge.repository;
 
 import com.example.carrer_bridge.domain.entities.JobOpportunity;
+import com.example.carrer_bridge.domain.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface JobOpportunityRepository extends JpaRepository<JobOpportunity, Long> {
     boolean existsByTitleAndUser_IdAndCompany_Id(String title, Long userId, Long companyId);
 
+    List<JobOpportunity> findByUser(User currentUser);
 }

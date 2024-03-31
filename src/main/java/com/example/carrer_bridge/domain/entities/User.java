@@ -49,8 +49,7 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user",  fetch = FetchType.EAGER)
     private List<Education> education;
 
-    @ManyToMany
-    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_trainings",
             joinColumns = @JoinColumn(name = "user_id"),

@@ -10,6 +10,7 @@ import com.example.carrer_bridge.service.JobOpportunityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -42,12 +43,29 @@ public class JobOpportunityServiceImpl implements JobOpportunityService {
 
     @Override
     public List<JobOpportunity> findAll() {
-        List<JobOpportunity> jobOpportunities = jobOpportunityRepository.findAll();
-        if (jobOpportunities.isEmpty()) {
-            throw new OperationException("No job opportunities found !");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+
+            User currentUser = (User) authentication.getPrincipal();
+
+            if (currentUser.getRole().getRoleType() == RoleType.ADMINISTRATOR) {
+                return jobOpportunityRepository.findAll();
+            } else if (currentUser.getRole().getRoleType() == RoleType.RECRUITER) {
+
+                return jobOpportunityRepository.findByUser(currentUser);
+            } else {
+
+                throw new OperationException("You are not authorized to access this resource.");
+            }
         } else {
-            return jobOpportunities;
+
+            throw new OperationException("Authentication required to access this resource.");
         }
+    }
+
+    @Override
+    public List<JobOpportunity> getJobs() {
+        return jobOpportunityRepository.findAll();
     }
 
     @Override

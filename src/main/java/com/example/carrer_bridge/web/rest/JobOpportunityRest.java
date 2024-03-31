@@ -40,6 +40,14 @@ public class JobOpportunityRest {
 
         return ResponseEntity.ok(jobOpportunityResponseDtos);
     }
+    @GetMapping("/get")
+    public ResponseEntity<List<JobOpportunityResponseDto>> getJobs() {
+        List<JobOpportunity> jobOpportunities = jobOpportunityService.getJobs();
+        List<JobOpportunityResponseDto> jobOpportunityResponseDtos = jobOpportunities.stream().map(jobOpportunityMapper::toResponseDto)
+                .toList();
+
+        return ResponseEntity.ok(jobOpportunityResponseDtos);
+    }
 
     @GetMapping("/{jobOpportunityId}")
     public ResponseEntity<?> getJobOpportunityById(@PathVariable Long jobOpportunityId) {

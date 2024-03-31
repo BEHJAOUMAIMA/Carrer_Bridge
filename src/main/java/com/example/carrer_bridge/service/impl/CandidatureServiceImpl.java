@@ -1,6 +1,7 @@
 package com.example.carrer_bridge.service.impl;
 
 import com.example.carrer_bridge.domain.entities.Candidature;
+import com.example.carrer_bridge.domain.entities.JobOpportunity;
 import com.example.carrer_bridge.domain.entities.User;
 import com.example.carrer_bridge.domain.enums.CandidatureStatus;
 import com.example.carrer_bridge.domain.enums.RoleType;
@@ -8,6 +9,7 @@ import com.example.carrer_bridge.handler.exception.OperationException;
 import com.example.carrer_bridge.repository.CandidatureRepository;
 import com.example.carrer_bridge.service.CandidatureService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -22,12 +24,18 @@ public class CandidatureServiceImpl implements CandidatureService {
     private final CandidatureRepository candidatureRepository;
     @Override
     public List<Candidature> findAll() {
-        List<Candidature> candidatures = candidatureRepository.findAll();
-        if (candidatures.isEmpty()) {
-            throw new OperationException("No candidatures found.");
-        }
-        return candidatures;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User authenticatedUser = (User) authentication.getPrincipal();
+        String role = authenticatedUser.getRole().getRoleType().toString();
+
+        return switch (role) {
+            case "ADMINISTRATOR" -> candidatureRepository.findAll();
+            case "RECRUITER" -> candidatureRepository.findByJobOpportunityUser(authenticatedUser);
+            case "PROFESSIONAL" -> candidatureRepository.findByUser(authenticatedUser);
+            default -> throw new OperationException("Role not supported: " + role);
+        };
     }
+
     @Override
     public Optional<Candidature> findById(Long id) {
         if (id == null) {
@@ -42,7 +50,7 @@ public class CandidatureServiceImpl implements CandidatureService {
     @Override
     public List<Candidature> findByUserId(Long userId) {
         if (userId == null) {
-            throw new IllegalArgumentException("User ID cannot be null.");
+            throw new OperationException("User ID cannot be null.");
         }
         List<Candidature> candidatures = candidatureRepository.findByUserId(userId);
         if (candidatures.isEmpty()) {
@@ -65,7 +73,7 @@ public class CandidatureServiceImpl implements CandidatureService {
     @Override
     public List<Candidature> findByStatus(CandidatureStatus status) {
         if (status == null) {
-            throw new IllegalArgumentException("Candidature status cannot be null.");
+            throw new OperationException("Candidature status cannot be null.");
         }
         List<Candidature> candidatures = candidatureRepository.findByStatus(status);
         if (candidatures.isEmpty()) {
@@ -81,13 +89,21 @@ public class CandidatureServiceImpl implements CandidatureService {
             throw new OperationException("Only professionals can submit candidatures.");
         }
 
-        if (candidature.getJobOpportunity().getExpirationDate().isBefore(LocalDateTime.now())) {
-            throw new OperationException("This job opportunity has already expired.");
+
+        JobOpportunity jobOpportunity = candidature.getJobOpportunity();
+        if (jobOpportunity == null) {
+            throw new OperationException("Job opportunity must be provided.");
         }
 
-        List<Candidature> existingCandidatures = candidatureRepository.findByUserIdAndJobOpportunityId(authenticatedUser.getId(), candidature.getJobOpportunity().getId());
+        Long jobOpportunityId = jobOpportunity.getId();
+        if (jobOpportunityId == null) {
+            throw new OperationException("Job opportunity ID must be provided.");
+        }
+
+
+        List<Candidature> existingCandidatures = candidatureRepository.findByUserIdAndJobOpportunityId(authenticatedUser.getId(), jobOpportunityId);
         if (!existingCandidatures.isEmpty()) {
-            throw new OperationException("You have already applied to this job opportunity.");
+            throw new OperationException("You have already applied to this job opportunity !");
         }
 
         candidature.setUser(authenticatedUser);
@@ -96,7 +112,7 @@ public class CandidatureServiceImpl implements CandidatureService {
 
         return candidatureRepository.save(candidature);
     }
-    @Override
+
     public Candidature update(Candidature candidatureUpdated, Long id) {
         Optional<Candidature> optionalCandidature = candidatureRepository.findById(id);
         if (optionalCandidature.isEmpty()) {

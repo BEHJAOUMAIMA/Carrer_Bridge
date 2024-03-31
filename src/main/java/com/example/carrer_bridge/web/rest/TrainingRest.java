@@ -9,6 +9,7 @@ import com.example.carrer_bridge.mappers.TrainingMapper;
 import com.example.carrer_bridge.service.TrainingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,18 @@ public class TrainingRest {
         List<TrainingResponseDto> trainingResponseDtos = trainings.stream().map(trainingMapper::toResponseDto)
                 .toList();
         return ResponseEntity.ok(trainingResponseDtos);
+    }
+    @GetMapping("/get")
+    public ResponseEntity<List<TrainingResponseDto>> getAllTrainingsWithoutAuth() {
+        List<Training> trainings = trainingService.getTraining();
+        List<TrainingResponseDto> trainingResponseDtos = trainings.stream().map(trainingMapper::toResponseDto)
+                .toList();
+        return ResponseEntity.ok(trainingResponseDtos);
+    }
+    @GetMapping("/user")
+    public ResponseEntity<List<Training>> getTrainingsForCurrentUser() {
+        List<Training> trainings = trainingService.findTrainingsForCurrentUser();
+        return new ResponseEntity<>(trainings, HttpStatus.OK);
     }
 
     @GetMapping("/{trainingId}")

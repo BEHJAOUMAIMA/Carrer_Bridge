@@ -25,12 +25,12 @@ public class UserRest {
     @GetMapping
     public ResponseEntity<List<UserResponseDto>> getAllUsers() {
         List<User> users = userService.findAll();
-        List<UserResponseDto> userResponseDTOs = users.stream().map(userMapper::toResponseDto)
+        List<UserResponseDto> userResponseDTOs = users.stream()
+                .map(userMapper::toResponseDto)
                 .toList();
 
         return ResponseEntity.ok(userResponseDTOs);
     }
-
     @GetMapping("/{userId}")
     public ResponseEntity<?> getUserById(@PathVariable Long userId) {
         Optional<User> user = userService.findById(userId);
@@ -39,9 +39,7 @@ public class UserRest {
             return ResponseMessage.notFound("User not found with ID: " + userId);
         }
 
-        User userEntity = user.get();
-        UserResponseDto userResponseDto = userMapper.toResponseDto(userEntity);
-
+        UserResponseDto userResponseDto = userMapper.toResponseDto(user.get());
         return ResponseEntity.ok(userResponseDto);
     }
 
