@@ -11,6 +11,7 @@ import com.example.carrer_bridge.service.CommunicationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class CommunicationRest {
     private final CommunicationMapper communicationMapper;
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('VIEW_COMMUNICATION')")
     public ResponseEntity<List<CommunicationResponseDto>> getAllCommunications() {
         List<Communication> communications = communicationService.findAll();
         List<CommunicationResponseDto> communicationResponseDtos = communications.stream().map(communicationMapper::toResponseDto)
@@ -33,6 +35,7 @@ public class CommunicationRest {
     }
 
     @GetMapping("/{communicationId}")
+    @PreAuthorize("hasAnyAuthority('VIEW_COMMUNICATION')")
     public ResponseEntity<?> getCommunicationById(@PathVariable Long communicationId) {
         Communication communication = communicationService.findById(communicationId)
                 .orElseThrow(() -> new OperationException("Communication not found with ID: " + communicationId));
@@ -58,6 +61,7 @@ public class CommunicationRest {
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('DELETE_COMMUNICATION')")
     public ResponseEntity<ResponseMessage> deleteCommunication(@PathVariable Long id) {
         Optional<Communication> existingCommunication = communicationService.findById(id);
         if (existingCommunication.isEmpty()) {

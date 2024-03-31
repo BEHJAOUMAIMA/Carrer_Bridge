@@ -11,6 +11,7 @@ import com.example.carrer_bridge.service.CompanyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -58,6 +59,7 @@ public class CompanyRest {
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('DELETE_COMPANY')")
     public ResponseEntity<ResponseMessage> deleteCompany(@PathVariable Long id) {
         Optional<Company> existingCompany = companyService.findById(id);
         if (existingCompany.isEmpty()) {

@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -53,6 +54,7 @@ public class TrainingRest {
     }
 
     @PostMapping("/save")
+    @PreAuthorize("hasAnyAuthority('CREATE_TRAINING')")
     public ResponseEntity<ResponseMessage> addTraining(@Valid @RequestBody TrainingRequestDto trainingRequestDto) {
         Training training = trainingService.save(trainingMapper.fromRequestDto(trainingRequestDto));
         if (training == null) {
@@ -63,6 +65,7 @@ public class TrainingRest {
     }
 
     @PutMapping("/update/{trainingId}")
+    @PreAuthorize("hasAnyAuthority('UPDATE_TRAINING')")
     public ResponseEntity<ResponseMessage> updateTraining(@PathVariable Long trainingId, @Valid @RequestBody TrainingRequestDto trainingRequestDto) {
         Training updatedTraining = trainingMapper.fromRequestDto(trainingRequestDto);
         Training training = trainingService.update(updatedTraining, trainingId);
@@ -70,6 +73,7 @@ public class TrainingRest {
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('DELETE_TRAINING')")
     public ResponseEntity<ResponseMessage> deleteTraining(@PathVariable Long id) {
         Optional<Training> existingTraining = trainingService.findById(id);
         if (existingTraining.isEmpty()) {

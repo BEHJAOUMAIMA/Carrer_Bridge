@@ -11,6 +11,7 @@ import com.example.carrer_bridge.service.CandidatureService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -27,6 +28,7 @@ public class CandidatureRest {
     private final CandidatureMapper candidatureMapper;
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('VIEW_CANDIDATURE')")
     public ResponseEntity<List<CandidatureResponseDTO>> getAllCandidatures() {
         List<Candidature> candidatures = candidatureService.findAll();
         List<CandidatureResponseDTO> candidatureResponseDtos = candidatures.stream().map(candidatureMapper::toResponseDto)
@@ -35,6 +37,7 @@ public class CandidatureRest {
     }
 
     @GetMapping("/{candidatureId}")
+    @PreAuthorize("hasAnyAuthority('VIEW_CANDIDATURE')")
     public ResponseEntity<?> getCandidatureById(@PathVariable Long candidatureId) {
         Candidature candidature = candidatureService.findById(candidatureId)
                 .orElseThrow(() -> new OperationException("Candidature not found with ID: " + candidatureId));
@@ -43,6 +46,7 @@ public class CandidatureRest {
     }
 
     @PostMapping("/save")
+    @PreAuthorize("hasAnyAuthority('CREATE_CANDIDATURE')")
     public ResponseEntity<ResponseMessage> addCandidature(@Valid @RequestBody CandidatureRequestDto candidatureRequestDto) {
         Candidature candidature = candidatureRequestDto.toCandidature();
         if (candidature.getJobOpportunity() == null || candidature.getJobOpportunity().getId() == null) {
@@ -61,12 +65,14 @@ public class CandidatureRest {
     }
 
     @PutMapping("/update/{candidatureId}")
+    @PreAuthorize("hasAnyAuthority('UPDATE_CANDIDATURE')")
     public ResponseEntity<ResponseMessage> updateCandidature(@PathVariable Long candidatureId, @Valid @RequestBody CandidatureRequestDto candidatureRequestDto) {
         Candidature updatedCandidature = candidatureMapper.fromRequestDto(candidatureRequestDto);
         Candidature candidature = candidatureService.update(updatedCandidature, candidatureId);
         return ResponseEntity.ok(ResponseMessage.created("Candidature updated successfully", candidature).getBody());
     }
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('DELETE_CANDIDATURE')")
     public ResponseEntity<ResponseMessage> deleteCandidature(@PathVariable Long id) {
         Optional<Candidature> existingCandidature = candidatureService.findById(id);
         if (existingCandidature.isEmpty()) {
@@ -76,6 +82,7 @@ public class CandidatureRest {
         return ResponseMessage.ok("Candidature deleted successfully with ID: " + id, null);
     }
     @GetMapping("/find-by-user/{userId}")
+    @PreAuthorize("hasAnyAuthority('VIEW_CANDIDATURE')")
     public ResponseEntity<List<CandidatureResponseDTO>> getCandidaturesByUserId(@PathVariable Long userId) {
         List<Candidature> candidatures = candidatureService.findByUserId(userId);
         List<CandidatureResponseDTO> candidatureResponseDtos = candidatures.stream().map(candidatureMapper::toResponseDto)
@@ -84,6 +91,7 @@ public class CandidatureRest {
     }
 
     @GetMapping("/find-by-job/{jobId}")
+    @PreAuthorize("hasAnyAuthority('VIEW_CANDIDATURE')")
     public ResponseEntity<List<CandidatureResponseDTO>> getCandidaturesByJobOpportunityId(@PathVariable Long jobId) {
         List<Candidature> candidatures = candidatureService.findByJobOpportunityId(jobId);
         List<CandidatureResponseDTO> candidatureResponseDtos = candidatures.stream().map(candidatureMapper::toResponseDto)
@@ -92,6 +100,7 @@ public class CandidatureRest {
     }
 
     @GetMapping("/find-by-status/{status}")
+    @PreAuthorize("hasAnyAuthority('VIEW_CANDIDATURE')")
     public ResponseEntity<List<CandidatureResponseDTO>> getCandidaturesByStatus(@PathVariable CandidatureStatus status) {
         List<Candidature> candidatures = candidatureService.findByStatus(status);
         List<CandidatureResponseDTO> candidatureResponseDtos = candidatures.stream().map(candidatureMapper::toResponseDto)

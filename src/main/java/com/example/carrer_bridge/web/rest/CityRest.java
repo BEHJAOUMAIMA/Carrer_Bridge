@@ -11,6 +11,7 @@ import com.example.carrer_bridge.service.CityService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class CityRest {
     private final CityMapper cityMapper;
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('VIEW_CITY')")
     public ResponseEntity<List<CityResponseDto>> getAllCities() {
         List<City> cities = cityService.findAll();
         List<CityResponseDto> cityResponseDtos = cities.stream().map(cityMapper::toResponseDto)
@@ -33,6 +35,7 @@ public class CityRest {
     }
 
     @GetMapping("/{cityId}")
+    @PreAuthorize("hasAnyAuthority('VIEW_CITY')")
     public ResponseEntity<?> getCityById(@PathVariable Long cityId) {
         City city = cityService.findById(cityId)
                 .orElseThrow(() -> new OperationException("City not found with ID: " + cityId));
@@ -41,6 +44,7 @@ public class CityRest {
     }
 
     @PostMapping("/save")
+    @PreAuthorize("hasAnyAuthority('CREATE_CITY')")
     public ResponseEntity<ResponseMessage> addCity(@Valid @RequestBody CityRequestDto cityRequestDto) {
         City city = cityService.save(cityMapper.fromRequestDto(cityRequestDto));
         if (city == null) {
@@ -51,6 +55,7 @@ public class CityRest {
     }
 
     @PutMapping("/update/{cityId}")
+    @PreAuthorize("hasAnyAuthority('UPDATE_CITY')")
     public ResponseEntity<ResponseMessage> updateCity(@PathVariable Long cityId, @Valid @RequestBody CityRequestDto cityRequestDto) {
         City updatedCity = cityMapper.fromRequestDto(cityRequestDto);
         City city = cityService.update(updatedCity, cityId);
@@ -58,6 +63,7 @@ public class CityRest {
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('DELETE_CITY')")
     public ResponseEntity<ResponseMessage> deleteCity(@PathVariable Long id) {
         Optional<City> existingCity = cityService.findById(id);
         if (existingCity.isEmpty()) {

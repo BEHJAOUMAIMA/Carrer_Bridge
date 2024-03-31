@@ -10,6 +10,7 @@ import com.example.carrer_bridge.service.EducationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class EducationRest {
     private final UserEducationMapper userEducationMapper;
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('VIEW_EDUCATION')")
     public ResponseEntity<List<UserEducationResponse>> getAllEducations() {
         List<Education> educations = educationService.findAll();
         List<UserEducationResponse> educationResponseDtos = educations.stream().map(userEducationMapper::toResponseDto)
@@ -31,6 +33,7 @@ public class EducationRest {
     }
 
     @GetMapping("/{educationId}")
+    @PreAuthorize("hasAnyAuthority('VIEW_EDUCATION')")
     public ResponseEntity<?> getEducationById(@PathVariable Long educationId) {
         Education education = educationService.findById(educationId)
                 .orElseThrow(() -> new OperationException("Education not found with ID: " + educationId));
@@ -39,12 +42,14 @@ public class EducationRest {
     }
 
     @PostMapping("/save")
+    @PreAuthorize("hasAnyAuthority('CREATE_EDUCATION')")
     public ResponseEntity<ResponseMessage> addEducation(@Valid @RequestBody UserEducationRequest userEducationRequest) {
         educationService.save(userEducationMapper.fromRequestDto(userEducationRequest));
         return ResponseMessage.created("Education created successfully", null);
     }
 
     @PutMapping("/update/{educationId}")
+    @PreAuthorize("hasAnyAuthority('UPDATE_EDUCATION')")
     public ResponseEntity<ResponseMessage> updateEducation(@PathVariable Long educationId, @Valid @RequestBody UserEducationRequest educationRequest) {
         Education updatedEducation = userEducationMapper.fromRequestDto(educationRequest);
         educationService.update(updatedEducation, educationId);
@@ -52,6 +57,7 @@ public class EducationRest {
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('DELETE_EDUCATION')")
     public ResponseEntity<ResponseMessage> deleteEducation(@PathVariable Long id) {
         Optional<Education> existingEducation = educationService.findById(id);
         if (existingEducation.isEmpty()) {
@@ -61,6 +67,7 @@ public class EducationRest {
         return ResponseMessage.ok("Education deleted successfully with ID: " + id, null);
     }
     @GetMapping("/findByName/{degree}")
+    @PreAuthorize("hasAnyAuthority('VIEW_EDUCATION')")
     public ResponseEntity<List<UserEducationResponse>> findEducationWithDegree(@PathVariable String degree) {
         List<Education> educations = educationService.findEducationByDegree(degree);
         List<UserEducationResponse> educationResponseDtos = educations.stream().map(userEducationMapper::toResponseDto).toList();
@@ -68,6 +75,7 @@ public class EducationRest {
     }
 
     @GetMapping("/findByUser")
+    @PreAuthorize("hasAnyAuthority('VIEW_EDUCATION')")
     public ResponseEntity<List<UserEducationResponse>> findEducationsByUser() {
         List<Education> educations = educationService.findEducationsByUser();
         List<UserEducationResponse> educationResponseDtos = educations.stream().map(userEducationMapper::toResponseDto).toList();

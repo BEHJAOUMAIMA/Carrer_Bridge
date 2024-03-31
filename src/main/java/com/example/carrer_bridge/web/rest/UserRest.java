@@ -9,6 +9,7 @@ import com.example.carrer_bridge.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class UserRest {
     private final UserMapper userMapper;
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('VIEW_USER')")
     public ResponseEntity<List<UserResponseDto>> getAllUsers() {
         List<User> users = userService.findAll();
         List<UserResponseDto> userResponseDTOs = users.stream()
@@ -32,6 +34,7 @@ public class UserRest {
         return ResponseEntity.ok(userResponseDTOs);
     }
     @GetMapping("/{userId}")
+    @PreAuthorize("hasAnyAuthority('VIEW_USER')")
     public ResponseEntity<?> getUserById(@PathVariable Long userId) {
         Optional<User> user = userService.findById(userId);
 
@@ -44,6 +47,7 @@ public class UserRest {
     }
 
     @PostMapping("/save")
+    @PreAuthorize("hasAnyAuthority('CREATE_USER')")
     public ResponseEntity<ResponseMessage> addUser(@Valid @RequestBody UserRequestDto userRequestDto) {
         User user = userService.save(userMapper.fromRequestDto(userRequestDto));
         if(user == null) {
@@ -54,6 +58,7 @@ public class UserRest {
     }
 
     @PutMapping("/update/{userId}")
+    @PreAuthorize("hasAnyAuthority('UPDATE_USER')")
     public ResponseEntity<ResponseMessage> updateUser(@PathVariable Long userId, @Valid @RequestBody UserRequestDto userRequestDto) {
 
         User updatedUser = userMapper.fromRequestDto(userRequestDto);
@@ -63,6 +68,7 @@ public class UserRest {
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('DELETE_USER')")
     public ResponseEntity<ResponseMessage> deleteUser(@PathVariable Long id) {
         Optional<User> existingUser = userService.findById(id);
 

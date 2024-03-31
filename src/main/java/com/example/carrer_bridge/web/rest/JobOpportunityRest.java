@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -58,6 +59,7 @@ public class JobOpportunityRest {
     }
 
     @PostMapping("/save")
+    @PreAuthorize("hasAnyAuthority('CREATE_JOB_OPPORTUNITY')")
     @Transactional
     public ResponseEntity<ResponseMessage> addJobOpportunity(@Valid @RequestBody JobOpportunityRequestDto jobOpportunityRequestDto) {
         Optional<Company> companyOptional = companyService.findById(jobOpportunityRequestDto.getCompanyId());
@@ -91,6 +93,7 @@ public class JobOpportunityRest {
 
 
     @PutMapping("/update/{jobOpportunityId}")
+    @PreAuthorize("hasAnyAuthority('UPDATE_JOB_OPPORTUNITY')")
     public ResponseEntity<ResponseMessage> updateJobOpportunity(@PathVariable Long jobOpportunityId, @Valid @RequestBody JobOpportunityRequestDto jobOpportunityRequestDto) {
         JobOpportunity updatedJobOpportunity = jobOpportunityMapper.fromRequestDto(jobOpportunityRequestDto);
         JobOpportunity jobOpportunity = jobOpportunityService.update(updatedJobOpportunity, jobOpportunityId);
@@ -98,6 +101,7 @@ public class JobOpportunityRest {
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('DELETE_JOB_OPPORTUNITY')")
     public ResponseEntity<ResponseMessage> deleteJobOpportunity(@PathVariable Long id) {
         Optional<JobOpportunity> existingJobOpportunity = jobOpportunityService.findById(id);
         if (existingJobOpportunity.isEmpty()) {

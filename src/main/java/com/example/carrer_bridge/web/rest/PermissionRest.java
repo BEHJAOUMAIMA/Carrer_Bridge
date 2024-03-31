@@ -10,6 +10,7 @@ import com.example.carrer_bridge.service.PermissionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class PermissionRest {
     private final PermissionMapper permissionMapper;
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('VIEW_PERMISSION')")
     public ResponseEntity<List<PermissionResponseDto>> getAllPermissions() {
         List<Permission> permissions = permissionService.findAll();
         List<PermissionResponseDto> permissionResponseDtos = permissions.stream().map(permissionMapper::toResponseDto)
@@ -32,6 +34,7 @@ public class PermissionRest {
     }
 
     @GetMapping("/{permissionId}")
+    @PreAuthorize("hasAnyAuthority('VIEW_PERMISSION')")
     public ResponseEntity<?> getPermissionById(@PathVariable Long permissionId) {
         Permission permission = permissionService.findById(permissionId)
                 .orElseThrow(() -> new OperationException("Permission not found with ID: " + permissionId));
@@ -40,6 +43,7 @@ public class PermissionRest {
     }
 
     @PostMapping("/save")
+    @PreAuthorize("hasAnyAuthority('CREATE_PERMISSION')")
     public ResponseEntity<ResponseMessage> addPermission(@Valid @RequestBody PermissionRequestDto permissionRequestDto) {
         Permission permission = permissionService.save(permissionMapper.fromRequestDto(permissionRequestDto));
         if (permission == null) {
@@ -50,6 +54,7 @@ public class PermissionRest {
     }
 
     @PutMapping("/update/{permissionId}")
+    @PreAuthorize("hasAnyAuthority('UPDATE_PERMISSION')")
     public ResponseEntity<ResponseMessage> updatePermission(@PathVariable Long permissionId, @Valid @RequestBody PermissionRequestDto permissionRequestDto) {
         Permission updatedPermission = permissionMapper.fromRequestDto(permissionRequestDto);
         Permission permission = permissionService.update(updatedPermission, permissionId);
@@ -57,6 +62,7 @@ public class PermissionRest {
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('DELETE_PERMISSION')")
     public ResponseEntity<ResponseMessage> deletePermission(@PathVariable Long id) {
         Optional<Permission> existingPermission = permissionService.findById(id);
         if (existingPermission.isEmpty()) {

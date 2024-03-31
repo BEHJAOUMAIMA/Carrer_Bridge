@@ -47,7 +47,6 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.GET, "/api/v1/companies/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/v1/communications/save").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/v1/jobs/search").permitAll()
-
                                 .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider).addFilterBefore(

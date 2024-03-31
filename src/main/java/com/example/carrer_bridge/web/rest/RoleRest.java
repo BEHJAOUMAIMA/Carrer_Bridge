@@ -11,6 +11,7 @@ import com.example.carrer_bridge.service.RoleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class RoleRest {
 
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('VIEW_ROLE')")
     public ResponseEntity<List<RoleResponseDto>> getAllRoles() {
         List<Role> roles = roleService.findAll();
         List<RoleResponseDto> roleResponseDTOs = roles.stream().map(roleMapper::toResponseDto)
@@ -33,6 +35,7 @@ public class RoleRest {
     }
 
     @GetMapping("/{roleId}")
+    @PreAuthorize("hasAnyAuthority('VIEW_ROLE')")
     public ResponseEntity<?> getRoleById(@PathVariable Long roleId) {
         Role role = roleService.findById(roleId)
                 .orElseThrow(() -> new OperationException("Role not found with ID: " + roleId));
@@ -41,6 +44,7 @@ public class RoleRest {
     }
 
     @PostMapping("/save")
+    @PreAuthorize("hasAnyAuthority('CREATE_ROLE')")
     public ResponseEntity<ResponseMessage> addRole(@Valid @RequestBody RoleRequestDto roleRequestDto) {
         Role role = roleService.save(roleMapper.fromRequestDto(roleRequestDto));
         if (role == null) {
@@ -51,12 +55,14 @@ public class RoleRest {
     }
 
     @PutMapping("/update/{roleId}")
+    @PreAuthorize("hasAnyAuthority('UPDATE_ROLE')")
     public ResponseEntity<ResponseMessage> updateRole(@PathVariable Long roleId, @Valid @RequestBody RoleRequestDto roleRequestDto) {
         Role updatedRole = roleMapper.fromRequestDto(roleRequestDto);
         Role role = roleService.update(updatedRole, roleId);
         return ResponseEntity.ok(ResponseMessage.created("Role updated successfully", role).getBody());
     }
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('DELETE_ROLE')")
     public ResponseEntity<ResponseMessage> deleteRole(@PathVariable Long id) {
         Optional<Role> existingRole = roleService.findById(id);
         if (existingRole.isEmpty()) {
