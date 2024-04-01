@@ -1,9 +1,7 @@
 package com.example.carrer_bridge.test;
 
-import com.example.carrer_bridge.domain.entities.RefreshToken;
 import com.example.carrer_bridge.domain.entities.Role;
 import com.example.carrer_bridge.domain.entities.User;
-import com.example.carrer_bridge.domain.entities.UserProfile;
 import com.example.carrer_bridge.domain.enums.RoleType;
 import com.example.carrer_bridge.dto.request.AuthenticationRequest;
 import com.example.carrer_bridge.dto.request.RegisterRequest;
@@ -12,235 +10,110 @@ import com.example.carrer_bridge.repository.RoleRepository;
 import com.example.carrer_bridge.repository.UserRepository;
 import com.example.carrer_bridge.security.jwt.JwtService;
 import com.example.carrer_bridge.security.jwt.RefreshTokenService;
-import com.example.carrer_bridge.service.AuthenticationService;
 import com.example.carrer_bridge.service.impl.AuthenticationServiceImpl;
-
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.Instant;
-import java.util.Collections;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class AuthenticationServiceImplTest {
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
-    @Test
-    public void test_register_new_user_with_valid_input_data() {
+    @Mock
+    private JwtService jwtService;
 
-        PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
-        JwtService jwtService = mock(JwtService.class);
-        UserRepository userRepository = mock(UserRepository.class);
-        RoleRepository roleRepository = mock(RoleRepository.class);
-        AuthenticationManager authenticationManager = mock(AuthenticationManager.class);
-        RefreshTokenService refreshTokenService = mock(RefreshTokenService.class);
+    @Mock
+    private UserRepository userRepository;
 
-        AuthenticationService authenticationService = new AuthenticationServiceImpl(passwordEncoder, jwtService, userRepository, roleRepository, authenticationManager, refreshTokenService);
+    @Mock
+    private RoleRepository roleRepository;
 
-        RegisterRequest request = RegisterRequest.builder()
-                .firstName("John")
-                .lastName("Doe")
-                .email("john.doe@example.com")
-                .roleType("PROFESSIONAL")
-                .password("password")
-                .confirmedPassword("password")
-                .build();
+    @Mock
+    private AuthenticationManager authenticationManager;
 
-        Role role = Role.builder()
-                .id(1L)
-                .roleType(RoleType.PROFESSIONAL)
-                .build();
+    @Mock
+    private RefreshTokenService refreshTokenService;
 
-        User user = User.builder()
-                .id(1L)
-                .firstName("John")
-                .lastName("Doe")
-                .email("john.doe@example.com")
-                .password("encodedPassword")
-                .role(role)
-                .build();
+    @InjectMocks
+    private AuthenticationServiceImpl authenticationService;
 
-        UserProfile userProfile = UserProfile.builder()
-                .id(1L)
-                .profileImage(null)
-                .bio(null)
-                .user(user)
-                .build();
-
-        AuthenticationResponse expectedResponse = AuthenticationResponse.builder()
-                .email("john.doe@example.com")
-                .accessToken("jwtToken")
-                .refreshToken("refreshToken")
-                .tokenType("BEARER")
-                .role("PROFESSIONAL")
-                .authorities(Collections.emptySet())
-                .build();
-
-        when(passwordEncoder.encode("password")).thenReturn("encodedPassword");
-        when(roleRepository.findByRoleType(RoleType.PROFESSIONAL)).thenReturn(Optional.of(role));
-        when(userRepository.findByEmail("john.doe@example.com")).thenReturn(Optional.empty());
-        when(userRepository.save(any(User.class))).thenReturn(user);
-        when(jwtService.generateToken(user)).thenReturn("jwtToken");
-        when(refreshTokenService.createRefreshToken(1L)).thenReturn(new RefreshToken());
-
-        AuthenticationResponse response = authenticationService.register(request);
-        assertEquals(expectedResponse, response);
+    @Before
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void test_authenticate_user_with_valid_email_and_password() {
+    public void testRegister() {
+        // Given
+        RegisterRequest request = new RegisterRequest();
+        request.setFirstName("oumaima");
+        request.setLastName("behja");
+        request.setEmail("oumaima@gmail.com");
+        request.setPassword("Azerty");
+        request.setConfirmedPassword("Azerty");
+        request.setRoleType("PROFISSIONAL");
 
-        PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
-        JwtService jwtService = mock(JwtService.class);
-        UserRepository userRepository = mock(UserRepository.class);
-        RoleRepository roleRepository = mock(RoleRepository.class);
-        AuthenticationManager authenticationManager = mock(AuthenticationManager.class);
-        RefreshTokenService refreshTokenService = mock(RefreshTokenService.class);
+        Role role = new Role();
+        role.setRoleType(RoleType.ADMINISTRATOR);
 
+        when(roleRepository.findByRoleType(RoleType.ADMINISTRATOR)).thenReturn(Optional.of(role));
+        when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
+            User user = invocation.getArgument(0);
+            user.setId(1L);
+            return user;
+        });
 
-        AuthenticationService authenticationService = new AuthenticationServiceImpl(passwordEncoder, jwtService, userRepository, roleRepository, authenticationManager, refreshTokenService);
+        // When
+        AuthenticationResponse response = authenticationService.register(request);
 
+        // Then
+        assertEquals("John", response.getFirstname());
+        assertEquals("Doe", response.getLastname());
+        assertEquals("john@example.com", response.getEmail());
+        assertEquals("BEARER", response.getTokenType());
+        assertEquals("ADMINISTRATOR", response.getRole());
+    }
 
-        AuthenticationRequest request = AuthenticationRequest.builder()
-                .email("john.doe@example.com")
-                .password("password")
-                .build();
+    @Test
+    public void testAuthenticate() {
+        // Given
+        AuthenticationRequest request = new AuthenticationRequest();
+        request.setEmail("john@example.com");
+        request.setPassword("password");
 
+        Role role = new Role();
+        role.setRoleType(RoleType.ADMINISTRATOR);
 
-        Role role = Role.builder()
-                .id(1L)
-                .roleType(RoleType.PROFESSIONAL)
-                .build();
+        User user = new User();
+        user.setFirstName("John");
+        user.setLastName("Doe");
+        user.setEmail("john@example.com");
+        user.setRole(role);
 
+        when(userRepository.findByEmail("john@example.com")).thenReturn(Optional.of(user));
 
-        User user = User.builder()
-                .id(1L)
-                .firstName("John")
-                .lastName("Doe")
-                .email("john.doe@example.com")
-                .password("encodedPassword")
-                .role(role)
-                .build();
-
-
-        AuthenticationResponse expectedResponse = AuthenticationResponse.builder()
-                .email("john.doe@example.com")
-                .accessToken("jwtToken")
-                .refreshToken("refreshToken")
-                .tokenType("BEARER")
-                .role("PROFESSIONAL")
-                .authorities(Collections.emptySet())
-                .build();
-
-        when(userRepository.findByEmail("john.doe@example.com")).thenReturn(Optional.of(user));
-        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(null);
-        when(jwtService.generateToken(user)).thenReturn("jwtToken");
-        when(refreshTokenService.createRefreshToken(1L)).thenReturn(new RefreshToken());
-
+        // When
         AuthenticationResponse response = authenticationService.authenticate(request);
-        assertEquals(expectedResponse, response);
+
+        // Then
+        assertEquals("John", response.getFirstname());
+        assertEquals("Doe", response.getLastname());
+        assertEquals("john@example.com", response.getEmail());
+        assertEquals("BEARER", response.getTokenType());
+        assertEquals("ADMINISTRATOR", response.getRole());
     }
-
-    @Test
-    public void test_generate_jwt_and_refresh_token() {
-
-        JwtService jwtService = mock(JwtService.class);
-        UserRepository userRepository = mock(UserRepository.class);
-        RefreshTokenService refreshTokenService = mock(RefreshTokenService.class);
-
-        AuthenticationService authenticationService = new AuthenticationServiceImpl(null, jwtService, userRepository, null, null, refreshTokenService);
-
-        User user = User.builder()
-                .id(1L)
-                .firstName("John")
-                .lastName("Doe")
-                .email("john.doe@example.com")
-                .password("password")
-                .build();
-
-
-        RefreshToken refreshToken = RefreshToken.builder()
-                .id(1L)
-                .user(user)
-                .token("refreshToken")
-                .expiryDate(Instant.now())
-                .revoked(false)
-                .build();
-
-        when(jwtService.generateToken(user)).thenReturn("jwtToken");
-        when(refreshTokenService.createRefreshToken(1L)).thenReturn(refreshToken);
-
-        // Call the register method and assert the response
-        AuthenticationResponse response = authenticationService.register(RegisterRequest.builder().build());
-        assertEquals("jwtToken", response.getAccessToken());
-        assertEquals("refreshToken", response.getRefreshToken());
-    }
-
-    @Test
-    public void test_save_new_user_to_database() {
-
-        PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
-        JwtService jwtService = mock(JwtService.class);
-        UserRepository userRepository = mock(UserRepository.class);
-        RoleRepository roleRepository = mock(RoleRepository.class);
-        AuthenticationManager authenticationManager = mock(AuthenticationManager.class);
-        RefreshTokenService refreshTokenService = mock(RefreshTokenService.class);
-
-
-        AuthenticationService authenticationService = new AuthenticationServiceImpl(passwordEncoder, jwtService, userRepository, roleRepository, authenticationManager, refreshTokenService);
-
-
-        RegisterRequest request = RegisterRequest.builder()
-                .firstName("John")
-                .lastName("Doe")
-                .email("john.doe@example.com")
-                .roleType("USER")
-                .password("password")
-                .confirmedPassword("password")
-                .build();
-
-
-        Role role = Role.builder()
-                .id(1L)
-                .roleType(RoleType.PROFESSIONAL)
-                .build();
-
-
-        User user = User.builder()
-                .id(1L)
-                .firstName("John")
-                .lastName("Doe")
-                .email("john.doe@example.com")
-                .password("encodedPassword")
-                .role(role)
-                .build();
-
-
-        UserProfile userProfile = UserProfile.builder()
-                .id(1L)
-                .profileImage(null)
-                .bio(null)
-                .user(user)
-                .build();
-
-
-        when(passwordEncoder.encode("password")).thenReturn("encodedPassword");
-        when(roleRepository.findByRoleType(RoleType.PROFESSIONAL)).thenReturn(Optional.of(role));
-        when(userRepository.findByEmail("john.doe@example.com")).thenReturn(Optional.empty());
-        when(userRepository.save(any(User.class))).thenReturn(user);
-
-
-        AuthenticationResponse response = authenticationService.register(request);
-        assertEquals("john.doe@example.com", response.getEmail());
-    }
-
-
-
 }

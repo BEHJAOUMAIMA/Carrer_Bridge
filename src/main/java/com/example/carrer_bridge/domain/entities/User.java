@@ -1,7 +1,5 @@
 package com.example.carrer_bridge.domain.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,7 +19,6 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Inheritance(strategy = InheritanceType.JOINED)
 @Builder
 public class User implements UserDetails {
     @Id
